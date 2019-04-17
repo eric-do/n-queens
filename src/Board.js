@@ -79,11 +79,28 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
+      // current row at rowIndex
+      var row = this.rows()[rowIndex];
+      // looking through row at rowIndex
+      // use indexof to check for first occurrence, then indexof again for an occurrence after the first ocurrence within the same row
+      // if there are 2 occurrences within a row, then we return true;
+      firstPiece = row.indexOf(1) //looking for placement of rook/queen
+      if (row.indexOf(1, firstPiece + 1) !== -1) {//looking for placement of other pieces after first placement
+        return true;
+      }
+
       return false; // fixme
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
+      var board = this.rows();
+      console.log('board:', board);
+      for (var i = 0; i < board.length; i++) {
+        if (this.hasRowConflictAt(i) === true) {
+          return this.hasRowConflictAt(i);
+        }
+      }
       return false; // fixme
     },
 
