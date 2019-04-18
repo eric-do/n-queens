@@ -16,6 +16,21 @@
 
 
 window.findNRooksSolution = function(n) {
+  // Input: n - size of the board
+  // Return: a 2D array representing a valid solution, else return null?
+  // Solution has n number of pieces, less than n pieces means it fails
+  // NOTE: formula for cell coordinate to integer: row x n + col = intCoord. last insertion point = (n * n) - 1
+  // RECURSION!
+  // Initialize an insertion point variable
+  // Execute an inner recursive function
+  //   If end of table, return null
+  //   Else analyze table:
+  //   For each row
+  //     For each column
+  //       If no conflict on cell, toggle cell and move to next row
+  //       Else leave cell alone, move to next column
+  //   If # of queens equal to n AND hasAnyConflicts is false, return matrix
+  //   Else, recursively call inner function passing(++i)
   var solution = undefined; //fixme
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
@@ -24,6 +39,11 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
+  // Input: n - size of the board
+  // Initialize insertion point to 0
+  // findNRooksSolution is invoked, passing (n, insertion) and returns solutions to countNRoocksSolutions
+  // Use Set to keep record of all solution matrices. We convert solutions into strings so Set won't contain duplicate solutions.
+  // return solutionCount = Set size
   var solutionCount = undefined; //fixme
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);

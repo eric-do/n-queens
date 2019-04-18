@@ -62,7 +62,7 @@
     },
 
 
-/*
+    /*
          _             _     _
      ___| |_ __ _ _ __| |_  | |__   ___ _ __ ___ _
     / __| __/ _` | '__| __| | '_ \ / _ \ '__/ _ (_)
@@ -84,8 +84,8 @@
       // looking through row at rowIndex
       // use indexof to check for first occurrence, then indexof again for an occurrence after the first ocurrence within the same row
       // if there are 2 occurrences within a row, then we return true;
-      firstPiece = row.indexOf(1) //looking for placement of rook/queen
-      if (row.indexOf(1, firstPiece + 1) !== -1) {//looking for placement of other pieces after first placement
+      firstPiece = row.indexOf(1); //looking for placement of rook/queen
+      if (row.indexOf(1, firstPiece + 1) !== -1) { //looking for placement of other pieces after first placement
         return true;
       }
 
