@@ -207,24 +207,63 @@
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
-    hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
+    hasMinorDiagonalConflictAt: function(index) {
       // Input: index
       // Return: boolean - true if there are conflicts, false if no conflicts
-      // If (index > n) starting position is (i - col, n - 1)
-      // Else starting position is (0, index)
-      // Loop backwards while column >= 0
-      //  If queen, increment counter
-      //  Increment row
-      return false; // fixme
-    },
+      // If (index > n - 1)
+      //  Column = n - 1
+      //  Row = i - col
+      //  Starting position is (i - col, col)
+      //  Loop while row < n
+      //    If queen, increment counter
+      //    decrement col
+      // If (index < n - 1)
+      //  row = 0
+      //  col = index
+      //  starting position is (0, index)
+      //  Loop backwards while column >= 0 (i.e. var i = col; i >= 0; i--)
+      //    If queen, increment counter
+      //    increment row
+      
+      // return counter > 1
+      var counter = 0;
+      var n = this.get('n');
+      if (index > n - 1) {
+        var col = n - 1;
+        var row = index - col;
+        for (var i = row; i < n; i++) {
+          if (this.get(i)[col] === 1) {
+            counter++;
+          }
+          col--; 
+        }
+      } else {
+        var row = 0;
+        var col = index;
+        for (var i = col; i >= 0; i--) {
+          if (this.get(row)[i] === 1) {
+            counter++;
+          }
+          row++;
+        }
+      }
 
+      return counter > 1;
+    },
+    
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
       // Input: nothing
       // Return: boolean - true if conflict found, false if not
-      // Loop 0 to n
+      // Loop 0 to (n - 1) * 2
       //  If hasMinorDiagonalConflictAt is true, return true
-      // Return false
+      // return false
+      var minorIndex = (this.get('n') - 1) * 2;
+      for (var i = 0; i < minorIndex; i++) {
+        if (this.hasMinorDiagonalConflictAt(i)) {
+          return true;
+        }
+      }
       return false; // fixme
     }
 
