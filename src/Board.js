@@ -163,27 +163,6 @@
     hasMajorDiagonalConflictAt: function(integerCoord) {
       // Input: index to start diagonal analysis
       // Output: boolean - true if conflict found, false if not
-      // Initialize counter to 0
-      // If (index >= 0) starting position = (0, index)
-      // If (index < 0)  starting position = (index, 0)
-      // Loop length of matrix starting at index
-      //   If queen, incremenent counter
-      //   increment column
-      // Return counter > 1
-      // var counter = 0;
-      // var position = index >= 0 ? [0, index] : [-index, 0];
-      // var row = position[0];
-      // var col = position[1];
-      // var n = this.get('n');
-      
-      // for (var i = row; i < n; i++) {
-      //   if (this.get(i)[col] === 1) {
-      //     counter++;
-      //   }
-      //   col++;
-      // }
-      // return counter > 1;
-      
       // row = floor(pos/n)
       // col = pos % n
       // counter
@@ -246,46 +225,7 @@
     hasMinorDiagonalConflictAt: function(integerCoord) {
       // Input: index
       // Return: boolean - true if there are conflicts, false if no conflicts
-      // If (index > n - 1)
-      //  Column = n - 1
-      //  Row = i - col
-      //  Starting position is (i - col, col)
-      //  Loop while row < n
-      //    If queen, increment counter
-      //    decrement col
-      // If (index < n - 1)
-      //  row = 0
-      //  col = index
-      //  starting position is (0, index)
-      //  Loop backwards while column >= 0 (i.e. var i = col; i >= 0; i--)
-      //    If queen, increment counter
-      //    increment row
-      
-      // return counter > 1
-      // var counter = 0;
-      // var n = this.get('n');
-      // if (index > n - 1) {
-      //   var col = n - 1;
-      //   var row = index - col;
-      //   for (var i = row; i < n; i++) {
-      //     if (this.get(i)[col] === 1) {
-      //       counter++;
-      //     }
-      //     col--; 
-      //   }
-      // } else {
-      //   var row = 0;
-      //   var col = index;
-      //   for (var i = col; i >= 0; i--) {
-      //     if (this.get(row)[i] === 1) {
-      //       counter++;
-      //     }
-      //     row++;
-      //   }
-      // }
-
-      // return counter > 1;
-       // row = floor(pos/n)
+      // row = floor(pos/n)
       // col = pos % n
       // counter
       // while row >= 0 and col < n, 

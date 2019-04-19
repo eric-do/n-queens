@@ -87,8 +87,6 @@ window.findNRooksSolution = function(n) {
       }
     }
   }
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  return solution;
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
@@ -105,8 +103,7 @@ window.countNRooksSolutions = function(n) {
   //         Increment solution count
   //         Clear the entire current row
   //       Else pass current matrix and ++currentRow to recursiveFunction
-  //     Else proceed to next column
-  //     
+  //     Else proceed to next column  
 
   var board = new Board({'n': n});
   var matrix = board.rows();
@@ -140,41 +137,39 @@ window.findNQueensSolution = function(n) {
   var board = new Board({'n': n});
   var matrix = board.rows();
   var solution = [[]];
+  var found = false;
+
   if (n === 0) { return {'n':0}; }
   
-  return recursiveMatrix(0);
+  recursiveMatrix(0);
+  return matrix;
   
   function recursiveMatrix(currentRow) {
     if (currentRow > n) { 
       return 0; 
     }
     
-    // matrix[currentRow].forEach((square, column) => {
-    //   var intCoord = currentRow * n + column;
-    //   board.togglePiece(currentRow, column);
-    //   if (!board.hasAnyQueensConflicts()) {
-    //     if (currentRow === n - 1) {
-    //       return matrix;
-    //     } else {
-    //       recursiveMatrix(currentRow + 1);
-    //     }
-    //   }
-    //   matrix[currentRow].fill(0);
-    // });
     var i = 0;
     while (i < matrix[currentRow].length) {
-    //for (var i = 0; i < matrix[currentRow].length; i++) {
+      var foundSolution = false;
       var intCoord = currentRow * n + i;
+
       board.togglePiece(currentRow, i);
       if (!board.hasAnyQueensConflicts()) {
         if (currentRow === n - 1) {
-          return matrix; 
+          foundSolution = true;
+          solution = matrix; 
+          found =true;
         } else {
           recursiveMatrix(currentRow + 1);
         }
       }
+      if (found) {
+        return; 
+      }
       matrix[currentRow].fill(0);
       i++;
+      
     }
   }
 };
