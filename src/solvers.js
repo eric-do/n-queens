@@ -142,26 +142,40 @@ window.findNQueensSolution = function(n) {
   var solution = [[]];
   if (n === 0) { return {'n':0}; }
   
-  recursiveMatrix(0);
-  return matrix;
+  return recursiveMatrix(0);
   
   function recursiveMatrix(currentRow) {
     if (currentRow > n) { 
       return 0; 
     }
     
-    matrix[currentRow].forEach((square, column) => {
-      var intCoord = currentRow * n + column;
-      board.togglePiece(currentRow, column);
+    // matrix[currentRow].forEach((square, column) => {
+    //   var intCoord = currentRow * n + column;
+    //   board.togglePiece(currentRow, column);
+    //   if (!board.hasAnyQueensConflicts()) {
+    //     if (currentRow === n - 1) {
+    //       return matrix;
+    //     } else {
+    //       recursiveMatrix(currentRow + 1);
+    //     }
+    //   }
+    //   matrix[currentRow].fill(0);
+    // });
+    var i = 0;
+    while (i < matrix[currentRow].length) {
+    //for (var i = 0; i < matrix[currentRow].length; i++) {
+      var intCoord = currentRow * n + i;
+      board.togglePiece(currentRow, i);
       if (!board.hasAnyQueensConflicts()) {
         if (currentRow === n - 1) {
-          return matrix;
+          return matrix; 
         } else {
           recursiveMatrix(currentRow + 1);
         }
       }
       matrix[currentRow].fill(0);
-    });
+      i++;
+    }
   }
 };
 
