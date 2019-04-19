@@ -160,7 +160,7 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
-    hasMajorDiagonalConflictAt: function(index) {
+    hasMajorDiagonalConflictAt: function(integerCoord) {
       // Input: index to start diagonal analysis
       // Output: boolean - true if conflict found, false if not
       // Initialize counter to 0
@@ -170,19 +170,54 @@
       //   If queen, incremenent counter
       //   increment column
       // Return counter > 1
-      var counter = 0;
-      var position = index >= 0 ? [0, index] : [-index, 0];
-      var row = position[0];
-      var col = position[1];
-      var n = this.get('n');
+      // var counter = 0;
+      // var position = index >= 0 ? [0, index] : [-index, 0];
+      // var row = position[0];
+      // var col = position[1];
+      // var n = this.get('n');
       
-      for (var i = row; i < n; i++) {
-        if (this.get(i)[col] === 1) {
+      // for (var i = row; i < n; i++) {
+      //   if (this.get(i)[col] === 1) {
+      //     counter++;
+      //   }
+      //   col++;
+      // }
+      // return counter > 1;
+      
+      // row = floor(pos/n)
+      // col = pos % n
+      // counter
+      // while row > 0 and col > 0, 
+      //  check current cell
+      //  if cell contains queen, increment counter
+      //  decrement row and col by 1
+      // while row < n and col < n, increment row and col by 1
+      //  if cell contains queen, increment counter
+      var n = this.get('n');
+      var row = Math.floor(integerCoord / n);
+      var col = integerCoord % n;
+      var counter = 0;
+      while (row >= 0 && col >= 0) {
+        if (this.get(row)[col] === 1) {
           counter++;
         }
-        col++;
+        row--;
+        col--; 
       }
+      
+      row = Math.floor(integerCoord / n) + 1;
+      col = (integerCoord % n) + 1;
+      
+      while (row < n && col < n) {
+        if (this.get(row)[col] === 1) {
+          counter++;
+        }
+        row++;
+        col++
+      }
+      
       return counter > 1;
+      
     },
 
     // test if any major diagonals on this board contain conflicts
@@ -193,7 +228,8 @@
       //  if (hasMajorDiagonalConflictAt returns true) return true
       // Return false
       var n =  this.get('n');
-      for (var i = -n; i < n; i++) {
+      var lastPosition = (n * n) - 1;
+      for (var i = 0; i < lastPosition; i++) {
         if (this.hasMajorDiagonalConflictAt(i)) {
           return true;
         }
@@ -207,7 +243,7 @@
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
-    hasMinorDiagonalConflictAt: function(index) {
+    hasMinorDiagonalConflictAt: function(integerCoord) {
       // Input: index
       // Return: boolean - true if there are conflicts, false if no conflicts
       // If (index > n - 1)
@@ -226,28 +262,61 @@
       //    increment row
       
       // return counter > 1
-      var counter = 0;
-      var n = this.get('n');
-      if (index > n - 1) {
-        var col = n - 1;
-        var row = index - col;
-        for (var i = row; i < n; i++) {
-          if (this.get(i)[col] === 1) {
-            counter++;
-          }
-          col--; 
-        }
-      } else {
-        var row = 0;
-        var col = index;
-        for (var i = col; i >= 0; i--) {
-          if (this.get(row)[i] === 1) {
-            counter++;
-          }
-          row++;
-        }
-      }
+      // var counter = 0;
+      // var n = this.get('n');
+      // if (index > n - 1) {
+      //   var col = n - 1;
+      //   var row = index - col;
+      //   for (var i = row; i < n; i++) {
+      //     if (this.get(i)[col] === 1) {
+      //       counter++;
+      //     }
+      //     col--; 
+      //   }
+      // } else {
+      //   var row = 0;
+      //   var col = index;
+      //   for (var i = col; i >= 0; i--) {
+      //     if (this.get(row)[i] === 1) {
+      //       counter++;
+      //     }
+      //     row++;
+      //   }
+      // }
 
+      // return counter > 1;
+       // row = floor(pos/n)
+      // col = pos % n
+      // counter
+      // while row >= 0 and col < n, 
+      //  check current cell
+      //  if cell contains queen, increment counter
+      //  decrement row by 1 and increment col by 1
+      // while row < n and col >= 0, increment row by 1 and decrement col by 1
+      //  if cell contains queen, increment counter
+      var n = this.get('n');
+      var row = Math.floor(integerCoord / n);
+      var col = integerCoord % n;
+      var counter = 0;
+      while (row >= 0 && col < n) {
+        if (this.get(row)[col] === 1) {
+          counter++;
+        }
+        row--;
+        col++; 
+      }
+      
+      row = Math.floor(integerCoord / n) + 1;
+      col = (integerCoord % n) - 1;
+      
+      while (row < n && col >= 0) {
+        if (this.get(row)[col] === 1) {
+          counter++;
+        }
+        row++;
+        col--;
+      }
+      
       return counter > 1;
     },
     
@@ -258,13 +327,21 @@
       // Loop 0 to (n - 1) * 2
       //  If hasMinorDiagonalConflictAt is true, return true
       // return false
-      var minorIndex = (this.get('n') - 1) * 2;
-      for (var i = 0; i < minorIndex; i++) {
-        if (this.hasMinorDiagonalConflictAt(i)) {
+      // var minorIndex = (this.get('n') - 1) * 2;
+      // for (var i = 0; i < minorIndex; i++) {
+      //   if (this.hasMinorDiagonalConflictAt(i)) {
+      //     return true;
+      //   }
+      // }
+      // return false; // fixme
+      var n = this.get('n');
+      var lastPosition = (n * n) - 1;
+      for (var i = 0; i < lastPosition; i++) {
+        if (this.hasMinorDiagonalConflictAt(i) === true) {
           return true;
-        }
+        } 
       }
-      return false; // fixme
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/

@@ -94,40 +94,105 @@ window.findNRooksSolution = function(n) {
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
   // Input: n - size of the board
-  // Create a new Set
-  // Initialize insertion point to 0
-  // Loop while insertion point is less than last position
-  //   Create a new matrix and set value to return of findNRooksSolution (n, insertion) 
-  //   Add new matrix to Set as a string
-  //   Increment insertion point
-  // return Set size
-  var set = new Set();
-  var insertionPoint = 0;
-  var lastPosition = (n * n);
-  while(insertionPoint < lastPosition) {
-    var newMatrix = findNRooksSolution(n, insertionPoint);
-    set.add(JSON.stringify(newMatrix));
-    insertionPoint++;
-  }
-  
-  return set.size;
+  // Return: number of solutions
+  // Create a new board using n
+  // Point arr to board.rows() 
+  //  RecursiveFunction
+  //   For each board column in currentRow
+  //     If column has no conflict
+  //       Toggle the row/col
+  //       If we are on the last row
+  //         Increment solution count
+  //         Clear the entire current row
+  //       Else pass current matrix and ++currentRow to recursiveFunction
+  //     Else proceed to next column
+  //     
 
-  console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
-  return solutionCount;
+  var board = new Board({'n': n});
+  var matrix = board.rows();
+  var solutionCounter = 0;
+  
+  recursiveCount(0);
+  return solutionCounter;
+  
+  function recursiveCount(currentRow) {
+    if (currentRow === n) { 
+      return 0; 
+    }
+    
+    matrix[currentRow].forEach((square, column) => {
+      board.togglePiece(currentRow, column);
+      if (!board.hasRowConflictAt(currentRow) && !board.hasColConflictAt(column)) {
+        if (currentRow === n - 1) {
+          solutionCounter++;
+          matrix[currentRow].fill(0);
+        } else {
+          recursiveCount(currentRow + 1);
+        }
+      }
+      matrix[currentRow].fill(0);
+    });
+  }
 };
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
-
-  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-  return solution;
+  var board = new Board({'n': n});
+  var matrix = board.rows();
+  var solution = [[]];
+  if (n === 0) { return {'n':0}; }
+  
+  recursiveMatrix(0);
+  return matrix;
+  
+  function recursiveMatrix(currentRow) {
+    if (currentRow > n) { 
+      return 0; 
+    }
+    
+    matrix[currentRow].forEach((square, column) => {
+      var intCoord = currentRow * n + column;
+      board.togglePiece(currentRow, column);
+      if (!board.hasAnyQueensConflicts()) {
+        if (currentRow === n - 1) {
+          return matrix;
+        } else {
+          recursiveMatrix(currentRow + 1);
+        }
+      }
+      matrix[currentRow].fill(0);
+    });
+  }
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-  var solutionCount = undefined; //fixme
-
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
-  return solutionCount;
+  var board = new Board({'n': n});
+  var matrix = board.rows();
+  var solutionCounter = 0;
+  
+  if (n === 0) { return 1; }
+  
+  recursiveCount(0);
+  return solutionCounter;
+  
+  function recursiveCount(currentRow) {
+    if (currentRow === n) { 
+      return 0; 
+    }
+    
+    matrix[currentRow].forEach((square, column) => {
+      var intCoord = currentRow * n + column;
+      board.togglePiece(currentRow, column);
+      if (!board.hasAnyQueensConflicts()) {
+        if (currentRow === n - 1) {
+          solutionCounter++;
+          matrix[currentRow].fill(0);
+        } else {
+          recursiveCount(currentRow + 1);
+        }
+      }
+      matrix[currentRow].fill(0);
+    });
+  }
 };
